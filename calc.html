@@ -1,0 +1,285 @@
+<!DOCTYPE html5>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        :root {
+            --main-gap: 3vh;
+        }
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        body.one {
+            --main-bg: #3b4664;
+            --font-color: white;
+            --screen-bg: #181f32;
+            --circle: #d03f30;
+            --circle-bg: #252d44;
+            --button-bg: #eae3d9;
+            --button-color: #414657;
+            --button-shadow: #8b8386;
+            --blue-button-bg: #647299;
+            --blue-button-shadow: #3d4867;
+            --danger-button-bg: #d13f30;
+            --danger-button-color: white;
+            --danger-button-shadow: #722c2a;
+        }
+        body.two {
+            --main-bg: #e6e6e6;
+            --font-color: #34362c;
+            --screen-bg: white;
+            --circle: #c75302;
+            --circle-bg: #d1cfcc;
+            --button-bg: #e5e4e0;
+            --button-color: var(--font-color);
+            --button-shadow: #aba49c;
+            --blue-button-bg: #388187;
+            --blue-button-shadow: #33666d;
+            --danger-button-bg: #c85401;
+            --danger-button-color: white;
+            --danger-button-shadow: #87481f;
+        }
+        body.three {
+            --main-bg: #17062a;
+            --font-color: #fbe24e;
+            --screen-bg: #1e0836;
+            --circle: #01ded1;
+            --circle-bg: #1e0935;
+            --button-bg: #331b4d;
+            --button-color: var(--font-color);
+            --button-shadow: #64197a;
+            --blue-button-bg: #56077c;
+            --blue-button-shadow: #a825d8;
+            --danger-button-bg: #00decf;
+            --danger-button-color: black;
+            --danger-button-shadow: #65f6ee;
+        }
+        body {
+            background-color: var(--main-bg);
+            display: grid;
+            place-items: center;
+        }
+        .calc {
+            display: flex;
+            flex-direction: column;
+            gap: var(--main-gap);
+            width: 30vw;
+        }
+        .calc header {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--main-gap) * 2);
+        }
+        .calc header .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            color: var(--font-color);
+        }
+        .calc header .top .themes {
+            display: flex;
+            gap: calc(var(--main-gap) * .5);
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            align-items: flex-end;
+        }
+        .themes > span {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: .5em;
+        }
+        .calc header .top .themes .chose-theme {
+            height: var(--main-gap);
+            width: calc(var(--main-gap) * 3);
+            background-color: var(--circle-bg);
+            border-radius: 100px;
+            position: relative;
+        }
+        .chose-theme .theme {
+            position: absolute;
+            height: 200%;
+            bottom: 0;
+            left: calc(var(--i) * var(--main-gap));
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: var(--main-gap);
+            font-size: .8em;
+        }
+        .theme span {
+            display: flex;
+            height: 50%;
+            align-items: center;
+        }
+        .theme .circle {
+            height: 50%;
+            width: 100%;
+            border-radius: 50%;
+            background-color: var(--circle);
+            display: flex;
+            align-items: center;
+            border: 3px solid var(--circle-bg);
+            cursor: pointer;
+            opacity: 0;
+        }
+        .theme.active .circle {
+            opacity: 1;
+        }
+        .screen {
+            overflow: hidden;
+            padding: calc(var(--main-gap) * 2);
+            background-color: var(--screen-bg);
+            font-size: 2em;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+            border-radius: 8px;
+            height: 15vh;
+            display: flex;
+            align-items: center;
+            color: var(--font-color);
+        }
+        .btn {
+            background-color: var(--button-bg);
+            color: var(--button-color);
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: calc(var(--main-gap) * .5) calc(var(--main-gap));
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 -3px var(--button-shadow) inset;
+            text-align: center;
+            cursor: pointer;
+        }
+        .btn:hover {
+            opacity: .9;
+        }
+        main {
+            border-radius: 8px;
+            background-color: var(--circle-bg);
+            padding: var(--main-gap);
+            display: grid;
+            gap: var(--main-gap);
+            grid-template-columns: repeat(4, calc(calc(25% - var(--main-gap)) + calc(var(--main-gap) / 4)));
+            direction: rtl;
+            text-transform: uppercase;
+        }
+        .danger {
+            background-color: var(--danger-button-bg);
+            color: var(--danger-button-color);
+            box-shadow: 0 -3px var(--danger-button-shadow) inset;
+        }
+        .blue {
+            background-color: var(--blue-button-bg);
+            color: white;
+            box-shadow: 0 -3px var(--blue-button-shadow) inset;
+        }
+        .tall {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body class="one">
+    <div class="calc">
+        <header>
+            <div class="top">
+                <h1 class="logo">calc</h1>
+                <div class="themes">
+                    <span>Theme</span>
+                    <div class="chose-theme">
+                        <div class="theme one" style="--i: 0;">
+                            <span>1</span>
+                            <div class="circle"></div>
+                        </div>
+                        <div class="theme two" style="--i: 1;">
+                            <span>2</span>
+                            <div class="circle"></div>
+                        </div>
+                        <div class="theme three" style="--i: 2;">
+                            <span>3</span>
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen"></div>
+        </header>
+        <main>
+            <div class="btn blue">del</div>
+            <div class="btn">9</div>
+            <div class="btn">8</div>
+            <div class="btn">7</div>
+            <div class="btn">+</div>
+            <div class="btn">6</div>
+            <div class="btn">5</div>
+            <div class="btn">4</div>
+            <div class="btn">-</div>
+            <div class="btn">3</div>
+            <div class="btn">2</div>
+            <div class="btn">1</div>
+            <div class="btn">*</div>
+            <div class="btn">/</div>
+            <div class="btn">0</div>
+            <div class="btn">.</div>
+            <div class="btn danger tall">=</div>
+            <div class="btn blue tall">reset</div>
+        </main>
+    </div>
+    <script>
+        const circles = document.getElementsByClassName('circle');
+        const btn = document.getElementsByClassName('btn');
+        const screen = document.getElementsByClassName('screen')[0];
+        let output = '';
+        if (localStorage.getItem('theme')) {
+            circles[localStorage.getItem('theme')].parentElement.classList.add('active');
+            document.body.className = circles[localStorage.getItem('theme')].parentElement.classList[1];
+        } else {
+            circles[0].parentElement.classList.add('active');
+        }
+        for (let i = 0; i < circles.length; i++) {
+            circles[i].onclick = _ => {
+                for (let j = 0; j < circles.length; j++) {
+                    circles[j].parentElement.classList.remove('active');
+                };
+                circles[i].parentElement.classList.add('active');
+                document.body.className = circles[i].parentElement.classList[1];
+                localStorage.setItem('theme', i)
+            };
+        };
+        for (let i = 0; i < btn.length; i++) {
+            if (btn[i].classList.length < 2) {
+                btn[i].onclick = _ => output += btn[i].textContent;
+            } else if (btn[i].textContent === 'del') {
+                btn[i].onclick = _ => {
+                    let del = '';
+                    for (let i = 0; i < output.length - 1; i++) {
+                        del += output[i];
+                    };
+                    output = del;
+                };
+            } else if (btn[i].textContent === 'reset') {
+                btn[i].onclick = _ => output = '';
+            } else {
+                btn[i].onclick = _ => {
+                    try {
+                        if (eval(screen.textContent) && eval(screen.textContent) !== 'infinity') {
+                            output = eval(screen.textContent);
+                        } else {
+                            output = 'ERROR';
+                        }
+                    } catch {
+                        output = 'ERROR';
+                    };
+                };
+            };
+            btn[i].addEventListener("click", _ => screen.textContent = output);
+        };
+    </script>
+</body>
+</html>
